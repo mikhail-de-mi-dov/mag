@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     
     'main',
     'cart',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    'cart.middlewareCartMiddleware',
+    'cart.middleware.CartMiddleware',
 ]
 
 ROOT_URLCONF = 'mag.urls'
@@ -92,7 +93,7 @@ DATABASES = {
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
         'HOST': os.getenv('POSTGRES_HOST', 'db'),
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        'ATOMIC_REQUESTS': True
+        'ATOMIC_REQUESTS': True,
     }
 }
 
@@ -144,3 +145,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_COOKIE_AGE = 86400 # 30 дней
 SESSION_SAVE_EVERY_REQUEST =True
+
+AUTH_USER_MODEL = 'users.CustomUser'
