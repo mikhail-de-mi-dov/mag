@@ -10,7 +10,7 @@ from .forms import AddToCartForms
 import json
 
 
-class CartMixixn:
+class CartMixin:
     def get_cart(self, request):
         if hasattr(request, 'cart'):
             return request.cart
@@ -27,7 +27,7 @@ class CartMixixn:
         return cart
     
 
-class CartModalView(CartMixixn, View):
+class CartModalView(CartMixin, View):
     def get(self, request):
         cart = self.get_cart(request)
         context = {
@@ -40,7 +40,7 @@ class CartModalView(CartMixixn, View):
         return TemplateResponse(request, 'cart/cart_modal.html', context)
     
 
-class AddToCartView(CartMixixn, View):
+class AddToCartView(CartMixin, View):
     @transaction.atomic
     def post(self, request, slug):
         cart = self.get_cart(request)
@@ -102,7 +102,7 @@ class AddToCartView(CartMixixn, View):
             }, status=400)
         
 
-class UpdateCartItemView(CartMixixn, View):
+class UpdateCartItemView(CartMixin, View):
     @transaction.atomic
     def post(self, request, item_id):
         cart = self.get_cart(request)
@@ -139,7 +139,7 @@ class UpdateCartItemView(CartMixixn, View):
         return TemplateResponse(request, 'cart/cart_modal.html', context)
     
 
-class RemoveCartItemView(CartMixixn, View):
+class RemoveCartItemView(CartMixin, View):
     def post(self, request, item_id):
         cart = self.get_cart(request)
         try:
@@ -163,7 +163,7 @@ class RemoveCartItemView(CartMixixn, View):
             }, status=400)
         
 
-class CartCountView(CartMixixn, View):
+class CartCountView(CartMixin, View):
     def get(self, request):
         cart = self.get_cart(request)
         return JsonResponse({
@@ -172,7 +172,7 @@ class CartCountView(CartMixixn, View):
         })
     
 
-class ClearCartView(CartMixixn, View):
+class ClearCartView(CartMixin, View):
     def post(self, request):
         cart = self.get_cart(request)
         cart.clear()
@@ -190,7 +190,7 @@ class ClearCartView(CartMixixn, View):
         })
     
 
-class CartSummaryView(CartMixixn, View):
+class CartSummaryView(CartMixin, View):
     def get(self, request):
         cart = self.get_cart(request)
         context = {
